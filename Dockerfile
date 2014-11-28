@@ -1,5 +1,5 @@
-From ubuntu:trusty
-MAINTAINER Elliott Ye
+FROM norsystechteam/ubuntu:14.04
+MAINTAINER contrib.php@norsys.fr
 
 # Set noninteractive mode for apt-get
 ENV DEBIAN_FRONTEND noninteractive
