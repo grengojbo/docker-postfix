@@ -7,14 +7,15 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN mkdir -p /etc/opendkim
 RUN mkdir -p /etc/supervisor/conf.d/
 
+EXPOSE 25
+EXPOSE 587
+
 # Update
 RUN apt-get update && apt-get install -y curl net-tools sudo
 
 # Start editing
 # Install package here for cache
 RUN apt-get -y install supervisor postfix sasl2-bin opendkim opendkim-tools
-
-EXPOSE 25
 
 # install confd
 RUN curl -sSL -o /usr/local/bin/confd https://s3-us-west-2.amazonaws.com/opdemand/confd-git-b8e693c \

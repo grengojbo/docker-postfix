@@ -72,6 +72,7 @@ if [[ -n "$(find /etc/postfix/certs -iname *.crt)" && -n "$(find /etc/postfix/ce
   # /etc/postfix/main.cf
   postconf -e smtpd_tls_cert_file=$(find /etc/postfix/certs -iname *.crt)
   postconf -e smtpd_tls_key_file=$(find /etc/postfix/certs -iname *.key)
+  postconf -e smtpd_tls_CAfile=$(find /etc/postfix/certs -iname *.pem)
   chmod 400 /etc/postfix/certs/*.*
   # /etc/postfix/master.cf
   postconf -M submission/inet="submission   inet   n   -   n   -   -   smtpd"
