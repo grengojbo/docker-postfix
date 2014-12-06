@@ -1,4 +1,4 @@
-FROM ubuntu-debootstrap:14.04
+FROM ubuntu-debootstrap:14.04.1
 MAINTAINER      Oleg Dolya "oleg.dolya@gmail.com"
 
 # Set noninteractive mode for apt-get
@@ -15,7 +15,7 @@ EXPOSE 587
 RUN apt-get update && apt-get install -y curl net-tools sudo apt-utils --no-install-recommends && apt-get -y install supervisor postfix sasl2-bin opendkim opendkim-tools  --no-install-recommends && apt-get -y autoremove && apt-get -y autoclean && apt-get -y clean
 
 # install confd
-RUN curl -sSL -o /usr/local/bin/confd https://s3-us-west-2.amazonaws.com/opdemand/confd-git-b8e693c \
+RUN curl -sSL --insecure -o /usr/local/bin/confd https://s3-us-west-2.amazonaws.com/opdemand/confd-git-b8e693c \
     && chmod +x /usr/local/bin/confd
 
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
