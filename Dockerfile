@@ -11,11 +11,8 @@ EXPOSE 25
 EXPOSE 587
 
 # Update
-RUN apt-get update && apt-get install -y curl net-tools sudo
-
-# Start editing
 # Install package here for cache
-RUN apt-get -y install supervisor postfix sasl2-bin opendkim opendkim-tools
+RUN apt-get update && apt-get install -y curl net-tools sudo apt-utils --no-install-recommends && apt-get -y install supervisor postfix sasl2-bin opendkim opendkim-tools  --no-install-recommends && apt-get -y autoremove && apt-get -y autoclean && apt-get -y clean
 
 # install confd
 RUN curl -sSL -o /usr/local/bin/confd https://s3-us-west-2.amazonaws.com/opdemand/confd-git-b8e693c \
