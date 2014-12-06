@@ -22,6 +22,8 @@ ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 ADD postfix.sh /opt/postfix.sh
 RUN chmod +x /opt/postfix.sh
 
+ADD opendkim.conf /etc/opendkim.conf
+
 # Add files
 ADD assets/install.sh /opt/install.sh
 

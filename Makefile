@@ -27,12 +27,11 @@ build:
 	@sudo docker build -t $(IMAGE_NAME) .
 
 run:
-	@mkdir -p $(CONF_DIR)/etc
-	@mkdir -p $(CONF_DIR)/etc/sasldb2
 	@mkdir -p $(CONF_DIR)/etc/opendkim/domainkeys
 	@mkdir -p $(CONF_DIR)/etc/postfix/certs
 	@echo "Run postfix..."
-	@sudo docker run --name $(IMAGE_REPO)-$(NAME) -e MAIL_DOMAIN=$(DOMAIN) -e MAIL_HOSTNAME=$(HOSTNAME) -e smtp_user=$(USERS) -v $(CONF_DIR)/etc/aliases.db:/etc/aliases.db -v $(CONF_DIR)/etc/sasldb2:/etc/sasldb2 -v $(CONF_DIR)/etc/opendkim/domainkeys:/etc/opendkim/domainkeys -v $(CONF_DIR)/etc/postfix/certs:/etc/postfix/certs -d $(IMAGE_NAME)
+	@#-v $(CONF_DIR)/etc/aliases.db:/etc/aliases.db -v $(CONF_DIR)/etc/sasldb2:/etc/sasldb2
+	@sudo docker run --name $(IMAGE_REPO)-$(NAME) -e MAIL_DOMAIN=$(DOMAIN) -e MAIL_HOSTNAME=$(HOSTNAME) -e smtp_user=$(USERS) -v $(CONF_DIR)/etc/opendkim/domainkeys:/etc/opendkim/domainkeys -v $(CONF_DIR)/etc/postfix/certs:/etc/postfix/certs --rm $(IMAGE_NAME)
 
 start:
 	@echo "Starting postfix..."
