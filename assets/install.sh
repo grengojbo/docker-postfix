@@ -33,7 +33,14 @@ fi
 if [[ -n "$MAIL_DOMAIN" ]]; then
   postconf -e mydomain=$MAIL_DOMAIN
 fi
+postconf -e "mydestination = \$myhostname, localhost.\$mydomain, localhost, \$mydomain"
 postconf -F '*/*/chroot = n'
+
+# No Open Proxy / No Spam
+postconf -e smtpd_sender_restrictions=permit_sasl_authenticated,permit_mynetworks,reject_unknown_sender_domain,permit
+postconf -e smtpd_helo_restrictions=permit_mynetworks,reject_invalid_hostname,permit
+postconf -e smtpd_relay_restrictions=permit_sasl_authenticated,permit_mynetworks,reject_unauth_destination
+postconf -e "smtpd_recipient_restrictions=permit_mynetworks,permit_inet_interfaces,permit_sasl_authenticated,reject_invalid_hostname,reject_non_fqdn_hostname,reject_non_fqdn_sender,reject_non_fqdn_recipient,reject_rbl_client zen.spamhaus.org,permit"
 
 ############
 # SASL SUPPORT FOR CLIENTS
@@ -43,7 +50,7 @@ postconf -F '*/*/chroot = n'
 # /etc/postfix/main.cf
 postconf -e smtpd_sasl_auth_enable=yes
 postconf -e broken_sasl_auth_clients=yes
-postconf -e smtpd_recipient_restrictions=permit_sasl_authenticated,reject_unauth_destination
+# postconf -e smtpd_recipient_restrictions=permit_sasl_authenticated,reject_unauth_destination
 # smtpd.conf
 cat >> /etc/postfix/sasl/smtpd.conf <<EOF
 pwcheck_method: auxprop
@@ -72,7 +79,7 @@ if [[ -n "$(find /etc/postfix/certs -iname *.crt)" && -n "$(find /etc/postfix/ce
   postconf -P "submission/inet/smtpd_tls_security_level=encrypt"
   postconf -P "submission/inet/smtpd_sasl_auth_enable=yes"
   postconf -P "submission/inet/milter_macro_daemon_name=ORIGINATING"
-  postconf -P "submission/inet/smtpd_recipient_restrictions=permit_sasl_authenticated,reject_unauth_destination"
+  # postconf -P "submission/inet/smtpd_recipient_restrictions=permit_sasl_authenticated,reject_unauth_destination"
 fi
 
 #############
